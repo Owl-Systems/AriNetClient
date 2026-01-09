@@ -1,13 +1,68 @@
-# WazoNet - .NET Client for Wazo Platform
+# AriNetClient  
+### Modern WebSocket Event Client for PBX Systems (.NET)
 
-A comprehensive .NET client library for interacting with Wazo Platform APIs.
+AriNetClient is a **modern, event-driven, strongly-typed WebSocket client** designed to integrate PBX systems (such as **Wazo** and **Asterisk**) into **ASP.NET Core / Web API** applications.
 
-## Installation
+The library abstracts all WebSocket complexity and exposes PBX events as **clean domain events**, allowing developers to focus purely on **business logic**.
 
-```bash
-dotnet add package WazoNet
+---
 
-## الخطوة 13: التجميع والنشر
+## 🚀 Why AriNetClient?
+
+Traditional PBX integrations require developers to:
+- Manually manage WebSocket connections
+- Parse raw JSON messages
+- Handle reconnections and failures
+- Mix infrastructure logic with business logic
+
+**AriNetClient solves this by design.**
+
+> You never deal with WebSockets, JSON, or server-specific formats.  
+> You only handle **strongly-typed events**.
+
+---
+
+## ✨ Key Features
+
+- ✅ Strongly typed domain events
+- ✅ Event-driven architecture (similar to AsterNET.ARI, but modern)
+- ✅ Built-in Dependency Injection support
+- ✅ Automatic event dispatching
+- ✅ Multiple handlers per event
+- ✅ BackgroundService friendly
+- ✅ Auto-reconnect and fault tolerance
+- ✅ Clean separation of concerns
+- ✅ Extensible for multiple PBX servers
+
+---
+
+## 🧠 Design Philosophy
+
+> **Unify your domain, not the PBX servers**
+
+Each PBX server emits different event names and payloads.  
+AriNetClient normalizes them into **domain-level events** that your application depends on.
+
+### Responsibility Boundaries
+
+| Layer | Responsibility |
+|-----|---------------|
+| WebSocketClient | Connection lifecycle |
+| Event Parser | Parse raw server messages |
+| Event Adapter | Convert to domain events |
+| Event Dispatcher | Route events |
+| Event Handlers | Business logic |
+| Your App | CRM, Billing, Rules, Notifications |
+
+---
+
+## 📦 Installation
+
+Add the package to your project:
+
+```xml
+<PackageReference Include="AriNetClient" Version="1.0.0" />
+
 
 ```bash
 # بناء المكتبة
