@@ -55,10 +55,13 @@ AriNetClient normalizes them into **domain-level events** that your application 
 | Your App | CRM, Billing, Rules, Notifications |
 
 ---
+
 ## ⚙️ Configuration
 
 ### appsettings.json
 
+```
+json
 {
   "Wazo": {
     "WebSocket": {
@@ -68,42 +71,6 @@ AriNetClient normalizes them into **domain-level events** that your application 
       "AutoReconnect": true
     }
   }
-}
-
----
-## 🏁 Getting Started
-> **Register the WebSocket Client**
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddWebSocketClient(
-    builder.Configuration.GetSection("Wazo:WebSocket")
-);
-
->**Create a Strongly-Typed Event Handler**
-
-public class CallStartedHandler 
-    : BaseEventHandler<CallStartedEvent>
-{
-    private readonly ILogger<CallStartedHandler> _logger;
-
-    public CallStartedHandler(
-        ILogger<CallStartedHandler> logger)
-        : base(logger)
-    {
-        _logger = logger;
-    }
-
-    protected override async Task ProcessEventAsync(
-        CallStartedEvent @event,
-        CancellationToken cancellationToken)
-    {
-        _logger.LogInformation(
-            "📞 Incoming call from {Caller}",
-            @event.CallerNumber
-        );
-
-        await Task.CompletedTask;
-    }
 }
 
 ---
