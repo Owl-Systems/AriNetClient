@@ -7,8 +7,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers
     /// <summary>
     /// معالج أساسي للأحداث يوفر وظائف مشتركة
     /// </summary>
-    public abstract class BaseEventHandler<TEvent> : IEventHandler<TEvent>
-        where TEvent : BaseEvent
+    public abstract class BaseEventHandler<TEvent> : IEventHandler<TEvent> where TEvent : BaseEvent
     {
         protected readonly ILogger _logger;
 
@@ -22,7 +21,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers
         /// </summary>
         public virtual int ExecutionOrder => 100;
 
-        protected BaseEventHandler(ILogger logger = null)
+        protected BaseEventHandler(ILogger logger)
         {
             _logger = logger;
         }
@@ -34,18 +33,15 @@ namespace AriNetClient.WebSockets.Services.EventHandlers
         {
             try
             {
-                _logger?.LogDebug("Handler {HandlerName} started processing event {EventType}",
-                    HandlerName, @event.EventType);
+                _logger?.LogDebug("Handler {HandlerName} started processing event {EventType}", HandlerName, @event.EventType);
 
                 await ProcessEventAsync(@event, cancellationToken);
 
-                _logger?.LogDebug("Handler {HandlerName} completed processing event {EventType}",
-                    HandlerName, @event.EventType);
+                _logger?.LogDebug("Handler {HandlerName} completed processing event {EventType}", HandlerName, @event.EventType);
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Handler {HandlerName} failed to process event {EventType}",
-                    HandlerName, @event.EventType);
+                _logger?.LogError(ex, "Handler {HandlerName} failed to process event {EventType}", HandlerName, @event.EventType);
 
                 // يمكن إعادة رفع الاستثناء أو معالجته حسب الحاجة
                 throw;

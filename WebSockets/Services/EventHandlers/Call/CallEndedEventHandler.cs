@@ -10,17 +10,14 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
     {
         private readonly ILogger<CallEndedEventHandler> _logger;
 
-        public CallEndedEventHandler(ILogger<CallEndedEventHandler> logger)
-            : base(logger)
+        public CallEndedEventHandler(ILogger<CallEndedEventHandler> logger) : base(logger)
         {
             _logger = logger;
         }
 
         public override int ExecutionOrder => 30;
 
-        protected override async Task ProcessEventAsync(
-            CallEndedEvent @event,
-            CancellationToken cancellationToken)
+        protected override async Task ProcessEventAsync(CallEndedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call ended - ID: {CallId}, Duration: {TotalDuration}s, Reason: {HangupCause}",
                 @event.CallId, @event.TotalDuration, @event.HangupCause);
@@ -38,9 +35,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await NotifySystemsOfCallEndAsync(@event, cancellationToken);
         }
 
-        private async Task RecordCallResultAsync(
-            CallEndedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task RecordCallResultAsync(CallEndedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Recording result for call {CallId}", @event.CallId);
 
@@ -53,9 +48,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await Task.Delay(100, cancellationToken);
         }
 
-        private async Task GenerateCallReportAsync(
-            CallEndedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task GenerateCallReportAsync(CallEndedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Generating report for call {CallId}", @event.CallId);
 
@@ -76,9 +69,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await Task.Delay(150, cancellationToken);
         }
 
-        private async Task CleanupCallResourcesAsync(
-            CallEndedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task CleanupCallResourcesAsync(CallEndedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Cleaning up resources for call {CallId}", @event.CallId);
 
@@ -86,9 +77,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await Task.Delay(50, cancellationToken);
         }
 
-        private async Task NotifySystemsOfCallEndAsync(
-            CallEndedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task NotifySystemsOfCallEndAsync(CallEndedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Notifying systems of call end for {CallId}", @event.CallId);
 

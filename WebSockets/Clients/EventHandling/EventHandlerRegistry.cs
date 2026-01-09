@@ -12,11 +12,9 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
     {
         private readonly ConcurrentDictionary<Type, List<object>> _handlers = new();
         private readonly List<IGlobalEventHandler> _globalHandlers = new();
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
 
-        public void RegisterHandler<TEvent, THandler>()
-            where TEvent : BaseEvent
-            where THandler : IEventHandler<TEvent>
+        public void RegisterHandler<TEvent, THandler>() where TEvent : BaseEvent where THandler : IEventHandler<TEvent>
         {
             var eventType = typeof(TEvent);
             var handlerType = typeof(THandler);
@@ -47,9 +45,7 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
             }
         }
 
-        public void UnregisterHandler<TEvent, THandler>()
-            where TEvent : BaseEvent
-            where THandler : IEventHandler<TEvent>
+        public void UnregisterHandler<TEvent, THandler>() where TEvent : BaseEvent where THandler : IEventHandler<TEvent>
         {
             var eventType = typeof(TEvent);
             var handlerType = typeof(THandler);
@@ -72,8 +68,7 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
             }
         }
 
-        public ReadOnlyCollection<IEventHandler<TEvent>> GetHandlers<TEvent>()
-            where TEvent : BaseEvent
+        public ReadOnlyCollection<IEventHandler<TEvent>> GetHandlers<TEvent>() where TEvent : BaseEvent
         {
             var eventType = typeof(TEvent);
 
@@ -117,7 +112,6 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
                 _globalHandlers.Remove(handler);
             }
         }
-
 
         public void Clear()
         {

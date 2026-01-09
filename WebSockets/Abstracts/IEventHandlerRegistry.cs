@@ -11,22 +11,17 @@ namespace AriNetClient.WebSockets.Abstracts
         /// <summary>
         /// تسجيل معالج لحدث معين
         /// </summary>
-        void RegisterHandler<TEvent, THandler>()
-            where TEvent : BaseEvent
-            where THandler : IEventHandler<TEvent>;
+        void RegisterHandler<TEvent, THandler>() where TEvent : BaseEvent where THandler : IEventHandler<TEvent>;
 
         /// <summary>
         /// إلغاء تسجيل معالج لحدث معين
         /// </summary>
-        void UnregisterHandler<TEvent, THandler>()
-            where TEvent : BaseEvent
-            where THandler : IEventHandler<TEvent>;
+        void UnregisterHandler<TEvent, THandler>() where TEvent : BaseEvent where THandler : IEventHandler<TEvent>;
 
         /// <summary>
         /// الحصول على جميع المعالجات لحدث معين
         /// </summary>
-        ReadOnlyCollection<IEventHandler<TEvent>> GetHandlers<TEvent>()
-            where TEvent : BaseEvent;
+        ReadOnlyCollection<IEventHandler<TEvent>> GetHandlers<TEvent>() where TEvent : BaseEvent;
 
         /// <summary>
         /// تسجيل معالج عام لجميع الأحداث

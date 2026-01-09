@@ -14,19 +14,14 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
         private readonly ILogger<EventDispatcher> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public EventDispatcher(
-            IEventHandlerRegistry registry,
-            ILogger<EventDispatcher> logger,
-            IServiceProvider serviceProvider)
+        public EventDispatcher(IEventHandlerRegistry registry, ILogger<EventDispatcher> logger, IServiceProvider serviceProvider)
         {
             _registry = registry ?? throw new ArgumentNullException(nameof(registry));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public void RegisterHandler<TEvent, THandler>()
-            where TEvent : BaseEvent
-            where THandler : Abstracts.IEventHandler<TEvent>
+        public void RegisterHandler<TEvent, THandler>() where TEvent : BaseEvent where THandler : IEventHandler<TEvent>
         {
             try
             {
@@ -42,9 +37,7 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
             }
         }
 
-        public void UnregisterHandler<TEvent, THandler>()
-            where TEvent : BaseEvent
-            where THandler : Abstracts.IEventHandler<TEvent>
+        public void UnregisterHandler<TEvent, THandler>() where TEvent : BaseEvent where THandler : Abstracts.IEventHandler<TEvent>
         {
             try
             {
@@ -88,8 +81,7 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
             }
         }
 
-        public async Task DispatchAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
-            where TEvent : BaseEvent
+        public async Task DispatchAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : BaseEvent
         {
             ArgumentNullException.ThrowIfNull(@event);
 
@@ -112,8 +104,7 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
             }
         }
 
-        private async Task DispatchToGlobalHandlersAsync<TEvent>(TEvent @event, CancellationToken cancellationToken)
-            where TEvent : BaseEvent
+        private async Task DispatchToGlobalHandlersAsync<TEvent>(TEvent @event, CancellationToken cancellationToken) where TEvent : BaseEvent
         {
             var globalHandlers = _registry.GetGlobalHandlers();
 
@@ -142,8 +133,7 @@ namespace AriNetClient.WebSockets.Clients.EventHandling
             }
         }
 
-        private async Task DispatchToSpecificHandlersAsync<TEvent>(TEvent @event, CancellationToken cancellationToken)
-            where TEvent : BaseEvent
+        private async Task DispatchToSpecificHandlersAsync<TEvent>(TEvent @event, CancellationToken cancellationToken) where TEvent : BaseEvent
         {
             var handlers = _registry.GetHandlers<TEvent>();
 

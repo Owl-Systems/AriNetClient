@@ -21,9 +21,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
         /// </summary>
         public override int ExecutionOrder => 10;
 
-        protected override async Task ProcessEventAsync(
-            CallStartedEvent @event,
-            CancellationToken cancellationToken)
+        protected override async Task ProcessEventAsync(CallStartedEvent @event, CancellationToken cancellationToken)
         {
             // تسجيل الحدث
             _logger.LogInformation("Call started - ID: {CallId}, From: {Caller}, To: {Callee}",
@@ -44,9 +42,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await OnCallStartedAsync(@event, cancellationToken);
         }
 
-        private async Task UpdateCallDashboardAsync(
-            CallStartedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task UpdateCallDashboardAsync(CallStartedEvent @event, CancellationToken cancellationToken)
         {
             // منطق تحديث لوحة التحكم
             _logger.LogDebug("Updating dashboard for call {CallId}", @event.CallId);
@@ -65,9 +61,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
         /// <summary>
         /// طريقة افتراضية يمكن للفئات المشتقة تخطيها
         /// </summary>
-        protected virtual Task OnCallStartedAsync(
-            CallStartedEvent @event,
-            CancellationToken cancellationToken)
+        protected virtual Task OnCallStartedAsync(CallStartedEvent @event, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

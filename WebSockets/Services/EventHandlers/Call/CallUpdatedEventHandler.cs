@@ -18,9 +18,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
 
         public override int ExecutionOrder => 20;
 
-        protected override async Task ProcessEventAsync(
-            CallUpdatedEvent @event,
-            CancellationToken cancellationToken)
+        protected override async Task ProcessEventAsync(CallUpdatedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call updated - ID: {CallId}, State: {NewState} (Previous: {PreviousState})",
                 @event.CallId, @event.NewState, @event.PreviousState);
@@ -50,9 +48,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await UpdateCallStatisticsAsync(@event, cancellationToken);
         }
 
-        private async Task OnCallAnsweredAsync(
-            CallUpdatedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task OnCallAnsweredAsync(CallUpdatedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call {CallId} was answered after {Duration} seconds",
                 @event.CallId, @event.Duration);
@@ -61,9 +57,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await Task.Delay(100, cancellationToken);
         }
 
-        private async Task OnCallBridgedAsync(
-            CallUpdatedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task OnCallBridgedAsync(CallUpdatedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call {CallId} was bridged", @event.CallId);
 
@@ -71,9 +65,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await Task.Delay(100, cancellationToken);
         }
 
-        private async Task OnCallRingingAsync(
-            CallUpdatedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task OnCallRingingAsync(CallUpdatedEvent @event, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call {CallId} is ringing", @event.CallId);
 
@@ -81,9 +73,7 @@ namespace AriNetClient.WebSockets.Services.EventHandlers.Call
             await Task.Delay(100, cancellationToken);
         }
 
-        private async Task UpdateCallStatisticsAsync(
-            CallUpdatedEvent @event,
-            CancellationToken cancellationToken)
+        private async Task UpdateCallStatisticsAsync(CallUpdatedEvent @event, CancellationToken cancellationToken)
         {
             // منطق تحديث الإحصائيات
             _logger.LogDebug("Updating statistics for call {CallId}", @event.CallId);

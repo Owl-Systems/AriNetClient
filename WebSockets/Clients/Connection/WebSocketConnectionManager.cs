@@ -23,11 +23,13 @@ namespace AriNetClient.WebSockets.Clients.Connection
         private int _reconnectionAttempts;
         private DateTime _lastConnectionTime;
 
+        //Events
         public event EventHandler Connected;
         public event EventHandler<string> Disconnected;
         public event EventHandler<string> MessageReceived;
         public event EventHandler<Exception> ErrorOccurred;
 
+        //Properties
         public WebSocketState State => _webSocket?.State ?? WebSocketState.None;
         public bool IsConnected => State == WebSocketState.Open;
         public int ReconnectionAttempts => _reconnectionAttempts;
@@ -35,7 +37,7 @@ namespace AriNetClient.WebSockets.Clients.Connection
 
         public WebSocketConnectionManager(
             ILogger<WebSocketConnectionManager> logger,
-            IOptions<Configuration.WebSocketOptions> options,
+            IOptions<WebSocketOptions> options,
             IReconnectionStrategy reconnectionStrategy)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -50,22 +52,23 @@ namespace AriNetClient.WebSockets.Clients.Connection
 
         public async Task ConnectAsync(CancellationToken cancellationToken = default)
         {
+            // 1. التحقق من عدم الاتصال مسبقاً
             if (IsConnected)
             {
                 _logger.LogWarning("WebSocket is already connected");
                 return;
             }
 
-            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
-                cancellationToken,
-                _globalCancellationTokenSource.Token);
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _globalCancellationTokenSource.Token);
+
             try
             {
                 _logger.LogInformation("Connecting to WebSocket at {Url}", _options.Url);
 
-                // إعداد رأس المصادقة
+                // 2. إعداد رأس المصادقة
                 _webSocket.Options.SetRequestHeader("X-Auth-Token", _options.AuthToken);
 
+                // 3. الاتصال بالخادم
                 var uri = new Uri(_options.Url);
                 await _webSocket.ConnectAsync(uri, linkedCts.Token);
 
@@ -75,10 +78,10 @@ namespace AriNetClient.WebSockets.Clients.Connection
 
                 _logger.LogInformation("WebSocket connected successfully to {Url}", _options.Url);
 
-                // بدء استقبال الرسائل
+                // 4. بدء استقبال الرسائل
                 StartReceivingMessages();
 
-                // إطلاق حدث الاتصال الناجح
+                // 5. إطلاق حدث الاتصال الناجح
                 Connected?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception ex)
@@ -221,9 +224,7 @@ namespace AriNetClient.WebSockets.Clients.Connection
             {
                 try
                 {
-                    var result = await _webSocket.ReceiveAsync(
-                        new ArraySegment<byte>(buffer),
-                        cancellationToken);
+                    var result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
 
                     if (result.MessageType == WebSocketMessageType.Text)
                     {
